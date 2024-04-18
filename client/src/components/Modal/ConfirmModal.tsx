@@ -1,5 +1,6 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 import * as styles from "./ConfirmModal.styles";
+import { YesNoButtons } from "../Buttons/YesNoButtons";
 
 type ConfirmModalProps = {
   open: boolean;
@@ -30,22 +31,10 @@ export const ConfirmModal = ({
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           {description}
         </Typography>
-        <div style={styles.buttonStyles}>
-          <Button
-            style={styles.button}
-            variant="contained"
-            onClick={onDeleteClick}
-          >
-            Yes
-          </Button>
-          <Button
-            style={styles.button}
-            variant="outlined"
-            onClick={handleClose}
-          >
-            No
-          </Button>
-        </div>
+        <YesNoButtons
+          primaryOnClick={onDeleteClick}
+          secondaryOnClick={handleClose}
+        />
       </Box>
     </Modal>
   );

@@ -23,7 +23,7 @@ To install and run the eep-todo project, follow these steps:
 
 ## Usage
 
-Once the application is running, you can access it in your web browser at `http://localhost:3000`. From there, you can create an account, log in, and start managing your tasks.
+Once the application is running, you can access it in your web browser at `http://localhost:3000`.
 
 ## Contributing
 

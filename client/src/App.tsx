@@ -4,6 +4,7 @@ import { useTodos } from "./hooks/useTodos";
 import { CreateTodo } from "./components/CreateTodo/CreateTodo";
 import { TodoList } from "./components/TodoList/TodoList";
 import { ConfirmModal } from "./components/Modal/ConfirmModal";
+import { CreateTodoModal } from "./components/Modal/CreateTodoModal";
 
 function App() {
   const { todos, fetchTodos, createTodo, deleteTodo, updateTodo } = useTodos();
@@ -46,18 +47,24 @@ function App() {
         onDeleteClick={onDeleteClick}
         onUpdateClick={onUpdateClick}
       />
-      <CreateTodo
+      {/* <CreateTodo
         isDisabled={title === ""}
         setTitle={setTitle}
         setDescription={setDescription}
         onCreateClick={onCreateClick}
-      />
+      /> */}
       <ConfirmModal
         open={open}
         handleClose={() => setOpen(false)}
         onDeleteClick={onConfirmDelete}
         title="Delete"
         description="Are you sure want to delete this todo?"
+      />
+      <CreateTodoModal
+        title={title}
+        setTitle={setTitle}
+        setDescription={setDescription}
+        onCreateClick={onCreateClick}
       />
     </div>
   );

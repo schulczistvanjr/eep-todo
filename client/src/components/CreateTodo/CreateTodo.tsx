@@ -1,26 +1,30 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import * as styles from "./CreateTodo.styles";
+import { YesNoButtons } from "../Buttons/YesNoButtons";
+import { useRef } from "react";
 
 type CreateTodoProps = {
-  isDisabled: boolean;
+  title: string;
   setTitle: (title: string) => void;
   setDescription: (description: string) => void;
   onCreateClick: () => void;
+  handleClose: () => void;
 };
 
 export const CreateTodo = ({
-  isDisabled,
+  title,
   setTitle,
   setDescription,
   onCreateClick,
+  handleClose,
 }: CreateTodoProps) => {
   return (
-    <div>
+    <div style={styles.container}>
       <div style={styles.textField}>
         <TextField
           required
           size="medium"
-          label="Add todo title"
+          label="Add title"
           variant="outlined"
           type="text"
           onChange={(e) => setTitle(e.currentTarget.value)}
@@ -31,18 +35,17 @@ export const CreateTodo = ({
           size="medium"
           type="text"
           variant="outlined"
-          label="Add todo description"
+          label="Add description"
           onChange={(e) => setDescription(e.currentTarget.value)}
         />
       </div>
-      <Button
-        type="submit"
-        variant="contained"
-        disabled={isDisabled}
-        onClick={() => onCreateClick()}
-      >
-        Create
-      </Button>
+      <YesNoButtons
+        primaryText="Create"
+        secondaryText="Cancel"
+        primaryDisabled={title === ""}
+        primaryOnClick={onCreateClick}
+        secondaryOnClick={() => handleClose()}
+      />
     </div>
   );
 };
