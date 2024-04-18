@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { todosState } from "../recoil/atoms";
 
 type Todo = {
   _id: string;
@@ -10,7 +11,7 @@ type Todo = {
 const baseUrl = "api/todos";
 
 export const useTodos = () => {
-  const [todos, setTodos] = useState<Todo[]>();
+  const [todos, setTodos] = useRecoilState(todosState);
 
   const fetchTodos = async () => {
     try {

@@ -1,26 +1,30 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import * as styles from "./ConfirmModal.styles";
 import { YesNoButtons } from "../Buttons/YesNoButtons";
+import { useTodos } from "../../hooks/useTodos";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { confirmModalState, todoIdToDeleteState } from "../../recoil/atoms";
 
 type ConfirmModalProps = {
-  open: boolean;
   title: string;
   description: string;
-  handleClose: () => void;
-  onDeleteClick: () => void;
 };
 
-export const ConfirmModal = ({
-  title,
-  description,
-  open,
-  handleClose,
-  onDeleteClick,
-}: ConfirmModalProps) => {
+export const ConfirmModal = ({ title, description }: ConfirmModalProps) => {
+  const { fetchTodos, deleteTodo } = useTodos();
+  const [confModalState, setconfModalState] = useRecoilState(confirmModalState);
+  const idToDelete = useRecoilValue(todoIdToDeleteState);
+
+  const onConfirmDelete = async () => {
+    await deleteTodo(idToDelete);
+    setconfModalState(false);
+    fetchTodos();
+  };
+
   return (
     <Modal
-      open={open}
-      onClose={handleClose}
+      open={confModalState}
+      onClose={() => setconfModalState(false)}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -32,8 +36,8 @@ export const ConfirmModal = ({
           {description}
         </Typography>
         <YesNoButtons
-          primaryOnClick={onDeleteClick}
-          secondaryOnClick={handleClose}
+          primaryOnClick={onConfirmDelete}
+          secondaryOnClick={() => setconfModalState(false)}
         />
       </Box>
     </Modal>

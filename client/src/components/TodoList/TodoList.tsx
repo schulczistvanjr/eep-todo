@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -9,21 +10,32 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ChecklistRtlOutlinedIcon from "@mui/icons-material/ChecklistRtlOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
-import { Todo } from "../../client.types";
 import { Divider } from "@mui/material";
 import * as styles from "./TodoList.styles";
+import { useTodos } from "../../hooks/useTodos";
+import { useRecoilState } from "recoil";
+import { confirmModalState, todoIdToDeleteState } from "../../recoil/atoms";
+import { CreateTodoButton } from "../Buttons/CreateTodoButton";
 
-type TodoListProps = {
-  todos: Todo[];
-  onDeleteClick: (id: string) => void;
-  onUpdateClick: (id: string, completed: boolean) => void;
-};
+export const TodoList = () => {
+  const { todos, fetchTodos, updateTodo } = useTodos();
+  const [, setTodoIdToDeleteState] = useRecoilState(todoIdToDeleteState);
+  const [, setconfModalState] = useRecoilState(confirmModalState);
 
-export const TodoList = ({
-  todos,
-  onDeleteClick,
-  onUpdateClick,
-}: TodoListProps) => {
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const handleDeleteClick = (id: string) => {
+    setTodoIdToDeleteState(id);
+    setconfModalState(true);
+  };
+
+  const onUpdateClick = (id: string, completed: boolean) => {
+    updateTodo(id, completed);
+    fetchTodos();
+  };
+
   return (
     <Grid item xs={12} md={6} style={styles.grid}>
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
@@ -33,9 +45,8 @@ export const TodoList = ({
         <Divider />
         {todos &&
           todos.map((todo) => (
-            <>
+            <React.Fragment key={todo._id}>
               <ListItem
-                key={todo._id}
                 secondaryAction={
                   <div>
                     <IconButton
@@ -51,7 +62,7 @@ export const TodoList = ({
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => onDeleteClick(todo._id)}
+                      onClick={() => handleDeleteClick(todo._id)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -70,8 +81,9 @@ export const TodoList = ({
                 />
               </ListItem>
               <Divider />
-            </>
+            </React.Fragment>
           ))}
+        <CreateTodoButton />
       </List>
     </Grid>
   );
