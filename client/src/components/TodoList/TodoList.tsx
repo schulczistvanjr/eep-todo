@@ -11,6 +11,7 @@ import ChecklistRtlOutlinedIcon from "@mui/icons-material/ChecklistRtlOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import { Todo } from "../../client.types";
 import { Divider } from "@mui/material";
+import * as styles from "./TodoList.styles";
 
 type TodoListProps = {
   todos: Todo[];
@@ -24,7 +25,7 @@ export const TodoList = ({
   onUpdateClick,
 }: TodoListProps) => {
   return (
-    <Grid item xs={12} md={6} style={{ paddingLeft: 200, paddingRight: 200 }}>
+    <Grid item xs={12} md={6} style={styles.grid}>
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
         ToDo list
       </Typography>
@@ -40,13 +41,11 @@ export const TodoList = ({
                     <IconButton
                       edge="end"
                       aria-label="complete"
-                      style={{ marginRight: 10 }}
+                      style={styles.iconButton}
                       onClick={() => onUpdateClick(todo._id, !todo.completed)}
                     >
                       <TaskAltOutlinedIcon
-                        style={{
-                          color: todo.completed ? "green" : "gray",
-                        }}
+                        style={styles.completeIcon(todo.completed)}
                       />
                     </IconButton>
                     <IconButton
@@ -67,7 +66,7 @@ export const TodoList = ({
                 <ListItemText
                   primary={todo.title}
                   secondary={todo.description}
-                  sx={{ textDecoration: todo.completed ? "line-through" : "" }}
+                  sx={styles.listItemText(todo.completed)}
                 />
               </ListItem>
               <Divider />

@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material";
+import * as styles from "./CreateTodo.styles";
 
 type CreateTodoProps = {
   isDisabled: boolean;
@@ -14,22 +15,22 @@ export const CreateTodo = ({
   onCreateClick,
 }: CreateTodoProps) => {
   return (
-    <div style={{ padding: 0 }}>
-      <div style={{ padding: 10 }}>
+    <div>
+      <div style={styles.textField}>
         <TextField
           required
           size="medium"
           label="Add todo title"
-          variant="filled"
+          variant="outlined"
           type="text"
           onChange={(e) => setTitle(e.currentTarget.value)}
         />
       </div>
-      <div style={{ padding: 10 }}>
+      <div style={styles.textField}>
         <TextField
           size="medium"
           type="text"
-          variant="filled"
+          variant="outlined"
           label="Add todo description"
           onChange={(e) => setDescription(e.currentTarget.value)}
         />
