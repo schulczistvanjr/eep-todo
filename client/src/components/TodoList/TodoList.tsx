@@ -4,23 +4,23 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ChecklistRtlOutlinedIcon from "@mui/icons-material/ChecklistRtlOutlined";
-import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import { Divider } from "@mui/material";
 import * as styles from "./TodoList.styles";
 import { useTodos } from "../../hooks/useTodos";
 import { useRecoilState } from "recoil";
 import { confirmModalState, todoIdToDeleteState } from "../../recoil/atoms";
 import { CreateTodoButton } from "../Buttons/CreateTodoButton";
+import { CompleteBinButtons } from "../Buttons/CompleteBinButtons";
+import { useTodoTemplate } from "./useTodoTemplate";
 
 export const TodoList = () => {
   const { todos, fetchTodos, updateTodo } = useTodos();
   const [, setTodoIdToDeleteState] = useRecoilState(todoIdToDeleteState);
   const [, setconfModalState] = useRecoilState(confirmModalState);
+  const { templateTitle, templateDescription } = useTodoTemplate();
 
   useEffect(() => {
     fetchTodos();
@@ -37,38 +37,16 @@ export const TodoList = () => {
   };
 
   return (
-    <Grid item xs={12} md={6} style={styles.grid}>
-      <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+    <Grid item xs={"auto"} md={"auto"} style={styles.grid}>
+      <Typography sx={{ mt: 4, mb: 2 }} variant="h5" component="div">
         ToDo list
       </Typography>
       <List>
         <Divider />
-        {todos &&
+        {todos.length !== 0 ? (
           todos.map((todo) => (
             <React.Fragment key={todo._id}>
-              <ListItem
-                secondaryAction={
-                  <div>
-                    <IconButton
-                      edge="end"
-                      aria-label="complete"
-                      style={styles.iconButton}
-                      onClick={() => onUpdateClick(todo._id, !todo.completed)}
-                    >
-                      <TaskAltOutlinedIcon
-                        style={styles.completeIcon(todo.completed)}
-                      />
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleDeleteClick(todo._id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </div>
-                }
-              >
+              <ListItem secondaryAction={<CompleteBinButtons todo={todo} />}>
                 <ListItemAvatar>
                   <Avatar>
                     <ChecklistRtlOutlinedIcon />
@@ -82,7 +60,23 @@ export const TodoList = () => {
               </ListItem>
               <Divider />
             </React.Fragment>
-          ))}
+          ))
+        ) : (
+          <div>
+            <ListItem secondaryAction={<CompleteBinButtons />}>
+              <ListItemAvatar>
+                <Avatar>
+                  <ChecklistRtlOutlinedIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={templateTitle}
+                secondary={templateDescription}
+              />
+            </ListItem>
+            <Divider />
+          </div>
+        )}
         <CreateTodoButton />
       </List>
     </Grid>
