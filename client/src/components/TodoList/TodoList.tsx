@@ -10,31 +10,17 @@ import ChecklistRtlOutlinedIcon from "@mui/icons-material/ChecklistRtlOutlined";
 import { Divider } from "@mui/material";
 import * as styles from "./TodoList.styles";
 import { useTodos } from "../../hooks/useTodos";
-import { useRecoilState } from "recoil";
-import { confirmModalState, todoIdToDeleteState } from "../../recoil/atoms";
 import { CreateTodoButton } from "../Buttons/CreateTodoButton";
 import { CompleteBinButtons } from "../Buttons/CompleteBinButtons";
 import { useTodoTemplate } from "./useTodoTemplate";
 
 export const TodoList = () => {
-  const { todos, fetchTodos, updateTodo } = useTodos();
-  const [, setTodoIdToDeleteState] = useRecoilState(todoIdToDeleteState);
-  const [, setconfModalState] = useRecoilState(confirmModalState);
+  const { todos, fetchTodos } = useTodos();
   const { templateTitle, templateDescription } = useTodoTemplate();
 
   useEffect(() => {
     fetchTodos();
   }, []);
-
-  const handleDeleteClick = (id: string) => {
-    setTodoIdToDeleteState(id);
-    setconfModalState(true);
-  };
-
-  const onUpdateClick = (id: string, completed: boolean) => {
-    updateTodo(id, completed);
-    fetchTodos();
-  };
 
   return (
     <Grid item xs={"auto"} md={"auto"} style={styles.grid}>
@@ -48,7 +34,7 @@ export const TodoList = () => {
             <React.Fragment key={todo._id}>
               <ListItem secondaryAction={<CompleteBinButtons todo={todo} />}>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar style={styles.avatar(todo.completed)}>
                     <ChecklistRtlOutlinedIcon />
                   </Avatar>
                 </ListItemAvatar>

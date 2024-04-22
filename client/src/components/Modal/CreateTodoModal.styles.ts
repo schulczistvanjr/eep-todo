@@ -1,4 +1,7 @@
 export const dialog = {
   padding: 20,
-  backgroundColor: "red",
+};
+
+export const dialogTitle = {
+  paddingLeft: 10,
 };

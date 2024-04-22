@@ -1,10 +1,12 @@
 export const container = {
-  padding: 20,
+  width: "100vh",
   gap: 20,
 };
 
-export const textField = {
-  paddingLeft: 10,
-  paddingRight: 10,
+export const textFieldContainer = {
   paddingBottom: 10,
+};
+
+export const textField = {
+  width: "100%",
 };

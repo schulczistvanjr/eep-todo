@@ -13,13 +13,14 @@ export const CreateTodo = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.textField}>
+      <div style={styles.textFieldContainer}>
         <TextField
           required
           value={title}
           size="medium"
           label="Add title"
           variant="outlined"
+          style={styles.textField}
           onChange={(e) =>
             setCreateModalState({
               ...createModalState,
@@ -33,6 +34,7 @@ export const CreateTodo = () => {
           size="medium"
           variant="outlined"
           value={description}
+          style={styles.textField}
           label="Add description"
           onChange={(e) =>
             setCreateModalState({

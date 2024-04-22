@@ -7,6 +7,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import { CreateTodo } from "../CreateTodo/CreateTodo";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { createTodoModalState } from "../../recoil/atoms";
+import * as styles from "./CreateTodoModal.styles";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,7 +29,7 @@ export const CreateTodoModal = () => {
       onClose={useResetRecoilState(createTodoModalState)}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>{"Add new ToDo"}</DialogTitle>
+      <DialogTitle style={styles.dialogTitle}>{"Create new ToDo"}</DialogTitle>
       <DialogActions>
         <CreateTodo />
       </DialogActions>
