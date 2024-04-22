@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -27,44 +27,45 @@ export const TodoList = () => {
       <Typography sx={{ mt: 4, mb: 2 }} variant="h5" component="div">
         ToDo list
       </Typography>
-      <List>
-        <Divider />
-        {todos.length !== 0 ? (
-          todos.map((todo) => (
-            <React.Fragment key={todo._id}>
-              <ListItem secondaryAction={<CompleteBinButtons todo={todo} />}>
-                <ListItemAvatar>
-                  <Avatar style={styles.avatar(todo.completed)}>
-                    <ChecklistRtlOutlinedIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={todo.title}
-                  secondary={todo.description}
-                  sx={styles.listItemText(todo.completed)}
-                />
-              </ListItem>
-              <Divider />
-            </React.Fragment>
-          ))
-        ) : (
-          <div>
-            <ListItem secondaryAction={<CompleteBinButtons />}>
+      <Divider />
+      {todos.length !== 0 ? (
+        todos.map((todo, i) => (
+          <List key={todo._id}>
+            <ListItem
+              key={todo._id}
+              secondaryAction={<CompleteBinButtons todo={todo} />}
+            >
               <ListItemAvatar>
-                <Avatar>
+                <Avatar style={styles.avatar(todo.completed)}>
                   <ChecklistRtlOutlinedIcon />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={templateTitle}
-                secondary={templateDescription}
+                primary={todo.title}
+                secondary={todo.description}
+                sx={styles.listItemText(todo.completed)}
               />
             </ListItem>
-            <Divider />
-          </div>
-        )}
-        <CreateTodoButton />
-      </List>
+            <Divider key={i} />
+          </List>
+        ))
+      ) : (
+        <List>
+          <ListItem secondaryAction={<CompleteBinButtons />}>
+            <ListItemAvatar>
+              <Avatar>
+                <ChecklistRtlOutlinedIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={templateTitle}
+              secondary={templateDescription}
+            />
+          </ListItem>
+          <Divider />
+        </List>
+      )}
+      <CreateTodoButton />
     </Grid>
   );
 };
