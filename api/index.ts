@@ -12,17 +12,20 @@ let db: Db;
 app.use(express.json());
 
 // Start the in-memory MongoDB server
-const mongoServer = new MongoMemoryServer();
+const mongoServer = new MongoMemoryServer({
+  instance: { port: 27017 },
+});
 mongoServer.start().then(() => {
   // Connect to the in-memory MongoDB server
   const mongoUri = mongoServer.getUri();
+  console.log("MongoDB URI:", mongoUri);
 
   /**
    * Connects to the in-memory MongoDB server.
    *
    * @param client - The MongoDB client.
    */
-  MongoClient.connect(mongoUri).then((client) => {
+  MongoClient.connect(mongoUri + "todo-app").then((client) => {
     db = client.db();
     console.log("Connected to in-memory MongoDB");
   });
