@@ -30,9 +30,9 @@ export const TodoList = () => {
       <Divider />
       {todos.length !== 0 ? (
         todos.map((todo, i) => (
-          <List key={todo._id}>
+          <List key={todo._id + i}>
             <ListItem
-              key={todo._id}
+              style={styles.listItem}
               secondaryAction={<CompleteBinButtons todo={todo} />}
             >
               <ListItemAvatar>

@@ -1,13 +1,6 @@
 import { useRecoilState } from "recoil";
 import { todosState } from "../recoil/atoms";
 
-type Todo = {
-  _id: string;
-  title: string;
-  description: string;
-  completed: boolean;
-};
-
 const baseUrl = "api/todos";
 
 export const useTodos = () => {
@@ -19,7 +12,7 @@ export const useTodos = () => {
       const data = await response.json();
       setTodos(data);
     } catch (error) {
-      console.error("Error fetching todos:", error);
+      console.error("Error fetching todos: ", error);
     }
   };
 
@@ -33,11 +26,10 @@ export const useTodos = () => {
         body: JSON.stringify({ title, description }),
       });
       const data = await response.json();
-      setTodos([...(todos || []), data]);
+      setTodos([...(todos || []), data.todo]);
     } catch (error) {
-      console.error("Error creating todo:", error);
+      console.error("Error creating todo: ", error);
     }
-    fetchTodos();
   };
 
   const deleteTodo = async (id: string) => {
@@ -48,9 +40,8 @@ export const useTodos = () => {
       const data = await response.json();
       setTodos(todos?.filter((todo) => todo._id !== data.id));
     } catch (error) {
-      console.error("Error deleting todo:", error);
+      console.error("Error deleting todo: ", error);
     }
-    fetchTodos();
   };
 
   const updateTodo = async (id: string, completed: boolean) => {
@@ -65,9 +56,8 @@ export const useTodos = () => {
       const data = await response.json();
       setTodos(todos?.map((todo) => (todo._id === data.id ? data : todo)));
     } catch (error) {
-      console.error("Error updating todo:", error);
+      console.error("Error updating todo: ", error);
     }
-    fetchTodos();
   };
 
   return { todos, fetchTodos, createTodo, deleteTodo, updateTodo };

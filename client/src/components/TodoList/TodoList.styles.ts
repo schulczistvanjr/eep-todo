@@ -3,6 +3,11 @@ export const grid = {
   paddingRight: 200,
 };
 
+export const listItem = {
+  minHeight: "80px",
+  paddingTop: 0,
+};
+
 export const listItemText = (completed: boolean) => {
   return {
     textDecoration: completed ? "line-through" : "",
