@@ -8,8 +8,9 @@ export const listItem = {
   paddingTop: 0,
 };
 
-export const listItemText = (completed: boolean) => {
+export const listItemText = (completed?: boolean) => {
   return {
+    maxWidth: "85%",
     textDecoration: completed ? "line-through" : "",
   };
 };

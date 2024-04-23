@@ -11,7 +11,7 @@ import { Divider } from "@mui/material";
 import * as styles from "./TodoList.styles";
 import { useTodos } from "../../hooks/useTodos";
 import { CreateTodoButton } from "../Buttons/CreateTodoButton";
-import { CompleteBinButtons } from "../Buttons/CompleteBinButtons";
+import { CompleteEditBinButtons } from "../Buttons/CompleteEditBinButtons";
 import { useTodoTemplate } from "./useTodoTemplate";
 
 export const TodoList = () => {
@@ -33,7 +33,7 @@ export const TodoList = () => {
           <List key={todo._id + i}>
             <ListItem
               style={styles.listItem}
-              secondaryAction={<CompleteBinButtons todo={todo} />}
+              secondaryAction={<CompleteEditBinButtons todo={todo} />}
             >
               <ListItemAvatar>
                 <Avatar style={styles.avatar(todo.completed)}>
@@ -51,7 +51,7 @@ export const TodoList = () => {
         ))
       ) : (
         <List>
-          <ListItem secondaryAction={<CompleteBinButtons />}>
+          <ListItem secondaryAction={<CompleteEditBinButtons />}>
             <ListItemAvatar>
               <Avatar>
                 <ChecklistRtlOutlinedIcon />
@@ -60,6 +60,7 @@ export const TodoList = () => {
             <ListItemText
               primary={templateTitle}
               secondary={templateDescription}
+              sx={styles.listItemText()}
             />
           </ListItem>
           <Divider />

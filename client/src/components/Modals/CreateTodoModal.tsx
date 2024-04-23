@@ -19,7 +19,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export const CreateTodoModal = () => {
-  const { isOpen } = useRecoilValue(createTodoModalState);
+  const { isOpen, isEditing } = useRecoilValue(createTodoModalState);
 
   return (
     <Dialog
@@ -29,7 +29,9 @@ export const CreateTodoModal = () => {
       onClose={useResetRecoilState(createTodoModalState)}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle style={styles.dialogTitle}>{"Create new ToDo"}</DialogTitle>
+      <DialogTitle style={styles.dialogTitle}>
+        {isEditing ? "Edit ToDo" : "Create new ToDo"}
+      </DialogTitle>
       <DialogActions>
         <CreateTodo />
       </DialogActions>

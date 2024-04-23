@@ -1,22 +1,29 @@
 import { IconButton } from "@mui/material";
 import { Todo } from "../../client.types";
-import * as styles from "./CompleteBinButtons.styles";
-import { useTodoTemplate } from "../TodoList/useTodoTemplate";
+import * as styles from "./CompleteEditBinButtons.styles";
 import { useHover } from "@uidotdev/usehooks";
 import { useRecoilState } from "recoil";
-import { confirmModalState, todoIdToDeleteState } from "../../recoil/atoms";
+import {
+  confirmModalState,
+  createTodoModalState,
+  todoIdToDeleteState,
+} from "../../recoil/atoms";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import { useTodos } from "../../hooks/useTodos";
 
-type CompleteBinButtonsProps = {
+type CompleteEditBinButtonsProps = {
   todo?: Todo;
 };
 
-export const CompleteBinButtons = ({ todo }: CompleteBinButtonsProps) => {
+export const CompleteEditBinButtons = ({
+  todo,
+}: CompleteEditBinButtonsProps) => {
   const { fetchTodos, updateTodo } = useTodos();
   const [, setTodoIdToDeleteState] = useRecoilState(todoIdToDeleteState);
   const [, setconfModalState] = useRecoilState(confirmModalState);
+  const [, setCreateModalState] = useRecoilState(createTodoModalState);
   const [ref, hovering] = useHover();
 
   const handleDeleteClick = (id: string) => {
@@ -24,14 +31,26 @@ export const CompleteBinButtons = ({ todo }: CompleteBinButtonsProps) => {
     setconfModalState(true);
   };
 
-  const onUpdateClick = (id: string, completed: boolean) => {
+  const onUpdateClick = (todo: Todo) => {
     updateTodo(id, completed);
-    fetchTodos();
   };
+
+  const onEditClick = (todo: Todo) => {
+    setCreateModalState({
+      isOpen: true,
+      isEditing: true,
+      title: todo.title,
+      description: todo.description,
+    });
+  };
+
   return !todo ? (
     <div style={(styles.iconContainer, styles.disabled)}>
       <IconButton disabled edge="end" aria-label="complete">
         <TaskAltOutlinedIcon />
+      </IconButton>
+      <IconButton disabled edge="end" aria-label="delete">
+        <ModeEditOutlineOutlinedIcon />
       </IconButton>
       <IconButton disabled edge="end" aria-label="delete">
         <DeleteIcon />
@@ -45,6 +64,14 @@ export const CompleteBinButtons = ({ todo }: CompleteBinButtonsProps) => {
         onClick={() => onUpdateClick(todo._id, !todo.completed)}
       >
         <TaskAltOutlinedIcon style={styles.completeIcon(todo.completed)} />
+      </IconButton>
+      <IconButton
+        ref={ref}
+        edge="end"
+        aria-label="delete"
+        onClick={() => onEditClick(todo)}
+      >
+        <ModeEditOutlineOutlinedIcon />
       </IconButton>
       <IconButton
         ref={ref}

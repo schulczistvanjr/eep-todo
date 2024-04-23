@@ -1,7 +1,7 @@
 import "./App.css";
 import { TodoList } from "./components/TodoList/TodoList";
-import { ConfirmModal } from "./components/Modal/ConfirmModal";
-import { CreateTodoModal } from "./components/Modal/CreateTodoModal";
+import { ConfirmModal } from "./components/Modals/ConfirmModal";
+import { CreateTodoModal } from "./components/Modals/CreateTodoModal";
 import { RecoilRoot } from "recoil";
 
 function App() {
