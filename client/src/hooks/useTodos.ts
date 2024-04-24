@@ -1,5 +1,6 @@
 import { useRecoilState } from "recoil";
 import { todosState } from "../recoil/atoms";
+import { Todo } from "../client.types";
 
 const baseUrl = "api/todos";
 
@@ -44,14 +45,18 @@ export const useTodos = () => {
     }
   };
 
-  const updateTodo = async (id: string, completed: boolean) => {
+  const updateTodo = async (todo: Todo) => {
     try {
-      const response = await fetch(`${baseUrl}/${id}`, {
+      const response = await fetch(`${baseUrl}/${todo._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ completed }),
+        body: JSON.stringify({
+          title: todo.title,
+          description: todo.description,
+          completed: todo.completed,
+        }),
       });
       const data = await response.json();
       setTodos(todos?.map((todo) => (todo._id === data.id ? data : todo)));

@@ -21,6 +21,19 @@ export const createTodoModalState = atom<CreateTodoModalStateType>({
   },
 });
 
+type EditTodoModalStateType = {
+  isOpen: boolean;
+  todo: Todo;
+};
+
+export const editTodoModalState = atom<EditTodoModalStateType>({
+  key: "editTodoModalState",
+  default: {
+    isOpen: false,
+    todo: {} as Todo,
+  },
+});
+
 export const confirmModalState = atom({
   key: "confirmModalState",
   default: false,

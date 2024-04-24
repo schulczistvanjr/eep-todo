@@ -2,19 +2,28 @@ import { TextField } from "@mui/material";
 import * as styles from "./CreateTodo.styles";
 import { YesNoButtons } from "../Buttons/YesNoButtons";
 import { useTodos } from "../../hooks/useTodos";
-import { createTodoModalState } from "../../recoil/atoms";
+import { editTodoModalState } from "../../recoil/atoms";
 import { useRecoilState } from "recoil";
+import { Todo } from "../../client.types";
 
-export const CreateTodo = () => {
-  const { createTodo } = useTodos();
-  const [createModalState, setCreateModalState] =
-    useRecoilState(createTodoModalState);
+export const EditTodo = () => {
+  const { fetchTodos, updateTodo } = useTodos();
 
-  const { title, description } = createModalState;
+  const [editModalState, setEditModalState] =
+    useRecoilState(editTodoModalState);
+
+  const { todo } = editModalState;
+  const { title, description } = editModalState.todo;
+
+  const onClose = () => {
+    setEditModalState({ isOpen: false, todo: {} as Todo });
+  };
 
   const onPrimaryClick = async () => {
-    await createTodo(title, description);
-    setCreateModalState({ title: "", description: "", isOpen: false });
+    await updateTodo(editModalState.todo);
+    setEditModalState({ isOpen: false, todo: {} as Todo });
+
+    fetchTodos();
   };
 
   return (
@@ -28,9 +37,9 @@ export const CreateTodo = () => {
           label="Title"
           style={styles.textField}
           onChange={(e) =>
-            setCreateModalState({
-              ...createModalState,
-              title: e.currentTarget.value,
+            setEditModalState({
+              ...editModalState,
+              todo: { ...todo, title: e.currentTarget.value },
             })
           }
         />
@@ -39,26 +48,23 @@ export const CreateTodo = () => {
         <TextField
           size="medium"
           variant="outlined"
-          value={description}
           multiline
+          value={description}
           style={styles.textField}
           label="Description"
           onChange={(e) =>
-            setCreateModalState({
-              ...createModalState,
-              description: e.currentTarget.value,
+            setEditModalState({
+              ...editModalState,
+              todo: { ...todo, description: e.currentTarget.value },
             })
           }
         />
       </div>
       <YesNoButtons
-        primaryText={"Create"}
+        primaryText={"Done"}
         secondaryText="Cancel"
-        primaryDisabled={!title}
         primaryOnClick={() => onPrimaryClick()}
-        secondaryOnClick={() =>
-          setCreateModalState({ isOpen: false, title: "", description: "" })
-        }
+        secondaryOnClick={onClose}
       />
     </div>
   );

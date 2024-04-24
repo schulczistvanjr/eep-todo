@@ -5,9 +5,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { CreateTodo } from "../CreateTodo/CreateTodo";
-import { useRecoilValue, useResetRecoilState } from "recoil";
-import { createTodoModalState } from "../../recoil/atoms";
+import { useRecoilValue } from "recoil";
+import { createTodoModalState, editTodoModalState } from "../../recoil/atoms";
 import * as styles from "./CreateTodoModal.styles";
+import { EditTodo } from "../CreateTodo/EditTodo";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -19,21 +20,23 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export const CreateTodoModal = () => {
-  const { isOpen, isEditing } = useRecoilValue(createTodoModalState);
+  const { isOpen: isCreateModalOpen } = useRecoilValue(createTodoModalState);
+  const { isOpen: isEditModalOpen } = useRecoilValue(editTodoModalState);
+
+  const isModalOpen = isCreateModalOpen || isEditModalOpen;
 
   return (
     <Dialog
-      open={isOpen}
+      open={isModalOpen}
       TransitionComponent={Transition}
       keepMounted
-      onClose={useResetRecoilState(createTodoModalState)}
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle style={styles.dialogTitle}>
-        {isEditing ? "Edit ToDo" : "Create new ToDo"}
+        {isEditModalOpen ? "Edit Todo" : "Create new ToDo"}
       </DialogTitle>
       <DialogActions>
-        <CreateTodo />
+        {isEditModalOpen ? <EditTodo /> : <CreateTodo />}
       </DialogActions>
     </Dialog>
   );
